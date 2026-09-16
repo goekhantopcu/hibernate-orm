@@ -37,7 +37,7 @@ import java.util.Set;
  *
  * @author Steve Ebersole
  */
-@Incubating
+@Incubating(since = "6.0", group = "sql-execution")
 public interface JdbcSelectExecutor {
 
 	/**
@@ -393,6 +393,11 @@ public interface JdbcSelectExecutor {
 			@Override
 			public boolean hasCallbackActions() {
 				return context.hasCallbackActions();
+			}
+
+			@Override
+			public boolean upgradeLocks() {
+				return context.upgradeLocks();
 			}
 
 			@Override

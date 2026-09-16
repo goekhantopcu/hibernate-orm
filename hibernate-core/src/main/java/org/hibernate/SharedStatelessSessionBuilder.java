@@ -61,7 +61,7 @@ import java.util.function.UnaryOperator;
  *
  * @author Steve Ebersole
  */
-@Incubating
+@Incubating(since = "7.2")
 public interface SharedStatelessSessionBuilder extends StatelessSessionBuilder, CommonSharedBuilder {
 	/**
 	 * Open the stateless session.
@@ -76,10 +76,12 @@ public interface SharedStatelessSessionBuilder extends StatelessSessionBuilder, 
 
 	@Override
 	@Nonnull
+	@SPI(SPI.Role.SUPPLY)
 	SharedStatelessSessionBuilder interceptor();
 
 	@Override
 	@Nonnull
+	@SPI(SPI.Role.SUPPLY)
 	SharedStatelessSessionBuilder interceptor(@Nullable Interceptor interceptor);
 
 	@Override

@@ -13,6 +13,7 @@ import org.hibernate.ConnectionAcquisitionMode;
 import org.hibernate.ConnectionReleaseMode;
 import org.hibernate.Incubating;
 import org.hibernate.Interceptor;
+import org.hibernate.SPI;
 import org.hibernate.Session;
 import org.hibernate.SharedSessionContract;
 import org.hibernate.StatelessSession;
@@ -31,7 +32,7 @@ import java.util.function.UnaryOperator;
  *
  * @author Steve Ebersole
  */
-@Incubating
+@Incubating(since = "7.2")
 public interface CommonBuilder {
 	/// Open the session using the specified options.
 	@Nonnull
@@ -55,11 +56,14 @@ public interface CommonBuilder {
 	@Nonnull
 	CommonBuilder connectionHandling(@Nonnull ConnectionAcquisitionMode acquisitionMode, @Nonnull ConnectionReleaseMode releaseMode);
 
-	/// Adds a specific interceptor to the session options.
+	/// Supply an [Interceptor] for the session being built.
+	/// Hibernate invokes its callbacks during that session’s lifecycle.
+	/// If the instance is also supplied to other sessions, it must be thread-safe.
 	///
 	/// @param interceptor The interceptor to use.
 	/// @return `this`, for method chaining
 	@Nonnull
+	@SPI(SPI.Role.SUPPLY)
 	CommonBuilder interceptor(@Nullable Interceptor interceptor);
 
 	/// Specifies that no {@link Interceptor} should be used.  This indicates to
@@ -168,7 +172,7 @@ public interface CommonBuilder {
 	/// @see org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider#releaseReadOnlyConnection(Object, Connection)
 	///
 	/// @since 7.2
-	@Incubating
+	@Incubating(since = "8.0")
 	@Nonnull
 	CommonBuilder readOnly(boolean readOnly);
 
@@ -224,7 +228,7 @@ public interface CommonBuilder {
 	 *
 	 * @see org.hibernate.annotations.Temporal
 	 */
-	@Incubating
+	@Incubating(since = "8.0")
 	@Nonnull
 	CommonBuilder asOf(@Nullable Instant instant);
 
@@ -240,7 +244,7 @@ public interface CommonBuilder {
 	 *
 	 * @see org.hibernate.annotations.Temporal
 	 */
-	@Incubating
+	@Incubating(since = "8.0")
 	@Nonnull
 	CommonBuilder atChangeset(@Nullable Object changesetId);
 }

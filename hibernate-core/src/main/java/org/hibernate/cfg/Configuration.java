@@ -845,7 +845,7 @@ public class Configuration {
 	 *
 	 * @see org.hibernate.boot.MetadataSources#addModule(Module)
 	 */
-	@Incubating
+	@Incubating(since = "8.0")
 	public Configuration addModule(Module module) {
 		metadataSources.addModule( module );
 		return this;
@@ -862,7 +862,7 @@ public class Configuration {
 	 *
 	 * @see org.hibernate.boot.MetadataSources#addModule(String)
 	 */
-	@Incubating
+	@Incubating(since = "8.0")
 	public Configuration addModule(String moduleName) {
 		metadataSources.addModule( moduleName );
 		return this;
@@ -913,17 +913,21 @@ public class Configuration {
 	 *
 	 * @return The current {@link Interceptor}
 	 */
+	@SPI(SPI.Role.USE)
 	public Interceptor getInterceptor() {
 		return interceptor;
 	}
 
 	/**
-	 * Set the current {@link Interceptor}.
+	 * Supply the {@link Interceptor} shared by sessions opened from the built factory.
+	 * Hibernate invokes its callbacks during each session’s lifecycle. The shared
+	 * instance must be thread-safe. A session-specific interceptor may override it.
 	 *
 	 * @param interceptor The {@link Interceptor} to use
 	 *
 	 * @return {@code this} for method chaining
 	 */
+	@SPI(SPI.Role.SUPPLY)
 	public Configuration setInterceptor(Interceptor interceptor) {
 		this.interceptor = interceptor;
 		return this;
@@ -1045,7 +1049,7 @@ public class Configuration {
 	/**
 	 * The {@link ColumnOrderingStrategy}, if any, that was added to this configuration.
 	 */
-	@Incubating
+	@Incubating(since = "6.2")
 	@SPI
 	public ColumnOrderingStrategy getColumnOrderingStrategy() {
 		return columnOrderingStrategy;
@@ -1056,7 +1060,7 @@ public class Configuration {
 	 *
 	 * @return {@code this} for method chaining
 	 */
-	@Incubating
+	@Incubating(since = "6.2")
 	@SPI
 	public Configuration setColumnOrderingStrategy(ColumnOrderingStrategy columnOrderingStrategy) {
 		this.columnOrderingStrategy = columnOrderingStrategy;

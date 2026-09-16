@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Steve Ebersole
  */
-@Incubating
+@Incubating(since = "6.0", group = "sql-execution")
 public interface LoadedValuesCollector {
 	/**
 	 * Register a loading entity.
@@ -34,6 +34,17 @@ public interface LoadedValuesCollector {
 			NavigablePath navigablePath,
 			EntityMappingType entityDescriptor,
 			EntityKey entityKey);
+
+	/**
+	 * Register an entity, indicating whether it was already managed before this load.
+	 */
+	default void registerEntity(
+			NavigablePath navigablePath,
+			EntityMappingType entityDescriptor,
+			EntityKey entityKey,
+			boolean reloaded) {
+		registerEntity( navigablePath, entityDescriptor, entityKey );
+	}
 
 	/**
 	 * Register a loading collection.
@@ -68,7 +79,15 @@ public interface LoadedValuesCollector {
 	record LoadedEntityRegistration(
 			NavigablePath navigablePath,
 			EntityMappingType entityDescriptor,
-			EntityKey entityKey) implements LoadedPartRegistration {
+			EntityKey entityKey,
+			boolean reloaded) implements LoadedPartRegistration {
+		public LoadedEntityRegistration(
+				NavigablePath navigablePath,
+				EntityMappingType entityDescriptor,
+				EntityKey entityKey) {
+			this( navigablePath, entityDescriptor, entityKey, false );
+		}
+
 		@Override
 		public EntityMappingType modelPart() {
 			return entityDescriptor();

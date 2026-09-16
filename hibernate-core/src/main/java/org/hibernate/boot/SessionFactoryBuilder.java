@@ -138,12 +138,16 @@ public interface SessionFactoryBuilder {
 	 * which will be used by all sessions unless an interceptor is explicitly
 	 * specified using {@link org.hibernate.SessionBuilder#interceptor}.
 	 *
+	 * The shared instance must be thread-safe. Hibernate invokes its callbacks
+	 * during the lifecycle of each session using it.
+	 *
 	 * @param interceptor The interceptor
 	 *
 	 * @return {@code this}, for method chaining
 	 *
 	 * @see org.hibernate.cfg.AvailableSettings#INTERCEPTOR
 	 */
+	@SPI(SPI.Role.SUPPLY)
 	SessionFactoryBuilder applyInterceptor(Interceptor interceptor);
 
 	/**
@@ -158,6 +162,7 @@ public interface SessionFactoryBuilder {
 	 *
 	 * @see org.hibernate.cfg.AvailableSettings#SESSION_SCOPED_INTERCEPTOR
 	 */
+	@SPI(SPI.Role.SUPPLY)
 	SessionFactoryBuilder applyStatelessInterceptor(Class<? extends Interceptor> statelessInterceptorClass);
 
 	/**
@@ -172,6 +177,7 @@ public interface SessionFactoryBuilder {
 	 *
 	 * @see org.hibernate.cfg.AvailableSettings#SESSION_SCOPED_INTERCEPTOR
 	 */
+	@SPI(SPI.Role.SUPPLY)
 	SessionFactoryBuilder applyStatelessInterceptor(Supplier<? extends Interceptor> statelessInterceptorSupplier);
 
 	/**
@@ -489,7 +495,7 @@ public interface SessionFactoryBuilder {
 	 * @see org.hibernate.cfg.AvailableSettings#QUERY_CACHE_LAYOUT
 	 * @since 6.5
 	 */
-	@Incubating
+	@Incubating(since = "6.5")
 	SessionFactoryBuilder applyQueryCacheLayout(CacheLayout cacheLayout);
 
 	/**
@@ -742,7 +748,7 @@ public interface SessionFactoryBuilder {
 	 *
 	 * @see org.hibernate.cfg.AvailableSettings#JSON_FORMAT_MAPPER
 	 */
-	@Incubating
+	@Incubating(since = "6.2")
 	SessionFactoryBuilder applyJsonFormatMapper(FormatMapper jsonFormatMapper);
 
 	/**
@@ -754,7 +760,7 @@ public interface SessionFactoryBuilder {
 	 *
 	 * @see org.hibernate.cfg.AvailableSettings#XML_FORMAT_MAPPER
 	 */
-	@Incubating
+	@Incubating(since = "6.2")
 	SessionFactoryBuilder applyXmlFormatMapper(FormatMapper xmlFormatMapper);
 
 	/**
